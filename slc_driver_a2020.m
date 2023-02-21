@@ -1,19 +1,35 @@
-% SLE calculation driver
+% SL calculation driver for A2020
 % Heiko Goelzer (heig@norceresearch.no), Feb 2023
 
 clear
 
 % Choose test configuration
-config = 1; % 1 = path dependence | 2 = perturbation | 3 = pump | 
-            % 4 = transition | 5 = no iso | 6,7,8 = deglaciation
+config = 9;
+% 1 = path dependence | 2 = perturbation | 3 = pump |
+% 4 = transition | 5 = no iso | 6,7,8 = deglaciation |
+% 9 = 2d case (n,t)
+
+% Verbose mode
+verbflg = 0;
+% Plotting mode
+pltflg = 1; 
+select = 1; % Select grid cell to plot 
+% Output mode. Sum over grid cells, e.g. for complex examples
+sumflg = 1;
+% Scaling for 0=schematic vs 1=real world setups
+sclflg = 0;
 
 % define constants
 params.rho_ice = 917; % kg/m^3 
 params.rho_ocean = 1028; % kg/m^3 
 params.rho_water = 1000; % kg/m^3 
-%params.Aoc = 3.618e14; % m^2
-% Schematic case
-params.Aoc = 1; 
+if sclflg
+    % Real world case
+    params.Aoc = 3.625e14; % m^2
+else
+    % Schematic case
+    params.Aoc = 1; 
+end
 
 if config==1
     % 1) define configuration with path dependence
@@ -48,6 +64,10 @@ elseif config==8
     % 8) define configuration with bed below
     THICK = [3, 2.5, 1.8, 0.7,  0.5, 0.2];
     BED = [-2, -2, -1.5, -1, -0.7, -0.5 ];
+elseif config==9
+    % 9) define 2D configuration (grid index,time) 
+    THICK = [3, 2.5, 1.8, 0.7,  0.5, 0.2; 3, 2.5, 1.8, 0.7,  0.5, 0.2];
+    BED = [-2, -2, -1.5, -1, -0.7, -0.5; -2, -2, -1.5, -1, 0.5, 1  ];
 else
     disp('unknown config')
     return
@@ -65,28 +85,42 @@ GROUND_MASK(GROUND_MASK>0) = 1;
 SURFACE = SURFACEg.*GROUND_MASK + SURFACEf.*(1-GROUND_MASK); 
 BASE = SURFACE-THICK;
 
-nt = length(BED)-1;
-sle_g2020 = zeros(1,nt);
+nt = size(BED,2)-1;
+nc = size(BED,1);
+slc_a2020 = zeros(nc,nt);
 % step through problem
 for n = 1:nt
-    sle_g2020(1,n) = g2020_func(BED(1,n:(n+1)),BASE(1,n:(n+1)),SURFACE(1,n:(n+1)),params);
+    slc_a2020(:,n) = a2020_func(BED(:,n:(n+1)),BASE(:,n:(n+1)),SURFACE(:,n:(n+1)),params);
 end
-sle_step_g2020 = sum(sle_g2020);
+slc_step_a2020 = sum(slc_a2020,2);
 
 % leap through problem from t0 to tend
-sle_leap_g2020 = g2020_func(BED(1,[1,end]),BASE(1,[1,end]),SURFACE(1,[1,end]),params);
+slc_leap_a2020 = a2020_func(BED(:,[1,end]),BASE(:,[1,end]),SURFACE(:,[1,end]),params);
 
-SURFACE
-THICK
-BASE
-BED
-GROUND_MASK
+% output configuration
+if verbflg
+    SURFACE
+    THICK
+    BASE
+    BED
+    GROUND_MASK
+end
 
-% Stepwise change
-sle_g2020
-
-% compare step and leap
-[sle_step_g2020, sle_leap_g2020]
+% Output results
+if sumflg
+    % sum over all grid cells
+    % compare step and leap
+    a2020_step_leap = [sum(slc_step_a2020,1), sum(slc_leap_a2020,1)]
+    % compare all transitions
+    sum(slc_a2020,1)
+else
+    % compare step and leap
+    a2020_step_leap = [slc_step_a2020, slc_leap_a2020]
+    % compare all transitions
+    slc_a2020
+end
 
 % plot configuration
-plot_columns
+if pltflg
+    plot_columns(BED,BASE,SURFACE,select)
+end

@@ -1,4 +1,5 @@
 % plot column evoltion in time
+function plot_columns(BED,BASE,SURFACE,index)
 
 %SURFACE
 %THICK
@@ -6,21 +7,21 @@
 %BED
 %GROUND_MASK
 
-nb = nt+1;
+nb = length(BED);
 
 set(groot,'defaultBarEdgeColor','w')
 figure
 hold on; box on;
 for n = 1:nb
     bar(n, -3,'k')
-    if BED(1,n)<0
-        bar(n, BED(1,n),'FaceColor','b')
-        bar(n, BASE(1,n),'FaceColor',[0.8,0.8,0.8])
-        bar(n, SURFACE(1,n),'FaceColor',[0.8,0.8,0.8])
+    if BED(index,n)<0
+        bar(n, BED(index,n),'FaceColor','b')
+        bar(n, BASE(index,n),'FaceColor',[0.8,0.8,0.8])
+        bar(n, SURFACE(index,n),'FaceColor',[0.8,0.8,0.8])
     else
-        bar(n, BASE(1,n),'FaceColor',[0.8,0.8,0.8])
-        bar(n, SURFACE(1,n),'FaceColor',[0.8,0.8,0.8])
-        bar(n, BED(1,n),'FaceColor','k')
+        bar(n, BASE(index,n),'FaceColor',[0.8,0.8,0.8])
+        bar(n, SURFACE(index,n),'FaceColor',[0.8,0.8,0.8])
+        bar(n, BED(index,n),'FaceColor','k')
     end
 end
 

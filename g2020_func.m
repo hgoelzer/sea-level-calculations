@@ -5,7 +5,7 @@
 
 function [slc_corr] = g2020 (BED,BASE,SURFACE,params)
 % Expect pairwise definitions of geometry for t0 and t1
-% dim(vars) = [1,2]
+% dim(vars) = [:,2]
 % BASE => Base of the ice.
 % BED => Bedrock elevation. 
 % SURFACE => Surface of the ice. 

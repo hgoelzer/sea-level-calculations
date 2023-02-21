@@ -48,7 +48,7 @@ DEL_HF = HF - HF(:,1); % Equation 9.
 GG = GROUND_MASK(:,1).*GROUND_MASK;
 DEL_HM = DEL_H.*GG + DEL_HF.*(1-GG); % Equation 11. 
 DEL_HV = (1-rho_water/rho_ocean)*(DEL_H - DEL_HF).*(1-GG); % Equation 12. 
-DEL_HS = DEL_HM(2) + DEL_HV(2); % Equation 10. 
+DEL_HS = DEL_HM(:,2) + DEL_HV(:,2); % Equation 10. 
 
 % Calculate sea-level contribution
 sle = -(rho_ice/rho_water) * DEL_HS / Aoc; % text end of 2.3 
