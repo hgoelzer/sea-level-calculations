@@ -1,29 +1,29 @@
 # sea-level-calculations
-Compare sea-level calculation methods
+##Compare sea-level calculation methods
 
 Heiko Goelzer (heig@norceresearch.no), Feb 2023
 
-# Sea-level calculation based on 
- G2020: https://tc.copernicus.org/articles/14/833/2020/
- A2020: https://tc.copernicus.org/articles/14/2819/2020/
- Based on provided example https://doi.org/10.7910/DVN/9LUJTD
- Surendra Adhikari, Jet Propulsion Lab, Caltech, adhikari@jpl.nasa.gov
+## Sea-level calculation based on 
+G2020: https://tc.copernicus.org/articles/14/833/2020/ <br>
+A2020: https://tc.copernicus.org/articles/14/2819/2020/ <br>
+Based on provided example https://doi.org/10.7910/DVN/9LUJTD <br> 
+Surendra Adhikari, Jet Propulsion Lab, Caltech, adhikari@jpl.nasa.gov <br>
 
-# Test A2020 for a number of simplified configurations
+## Test A2020 for a number of simplified configurations
 sle_driver_a2020.m <br>
-  a2020_func.m <br>
-  plot_columns.m <br>
+&nbsp;&nbsp;&nbsp;&nbsp;  a2020_func.m <br>
+&nbsp;&nbsp;&nbsp;&nbsp;  plot_columns.m <br>
 
 
-# Test G2020 for a number of simplified configurations
+## Test G2020 for a number of simplified configurations
 sle_driver_g2020.m <br>
-  g2020_func.m <br>
-  plot_columns.m <br>
+&nbsp;&nbsp;&nbsp;&nbsp;  g2020_func.m <br>
+&nbsp;&nbsp;&nbsp;&nbsp;  plot_columns.m <br>
 
 
-# Compare A2020 and G2020 for a number of simplified configurations
+## Compare A2020 and G2020 for a number of simplified configurations
 sle_driver_comp.m <br>
-  a2020_func.m <br>
-  g2020_func.m <br>
-  plot_columns.m <br>
+&nbsp;&nbsp;&nbsp;&nbsp;  a2020_func.m <br>
+&nbsp;&nbsp;&nbsp;&nbsp;  g2020_func.m <br>
+&nbsp;&nbsp;&nbsp;&nbsp;  plot_columns.m <br>
 
