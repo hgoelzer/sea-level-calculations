@@ -1,9 +1,9 @@
-% SLE calculation function
+% SL calculation function
 % Implementinig Adhikari et al., 2020
 % https://tc.copernicus.org/articles/14/2819/2020/
 % Heiko Goelzer (heig@norceresearch.no), Feb 2023
 
-function [sle] = a2020 (BED,BASE,SURFACE,params)
+function [slc] = a2020 (BED,BASE,SURFACE,params)
 % Expect pairwise definitions of geometry for t0 and t1
 % dim(vars) = [1,2]
 % BASE => Base of the ice.
@@ -51,4 +51,4 @@ DEL_HV = (1-rho_water/rho_ocean)*(DEL_H - DEL_HF).*(1-GG); % Equation 12.
 DEL_HS = DEL_HM(:,2) + DEL_HV(:,2); % Equation 10. 
 
 % Calculate sea-level contribution
-sle = -(rho_ice/rho_water) * DEL_HS / Aoc; % text end of 2.3 
+slc = -(rho_ice/rho_water) * DEL_HS / Aoc; % text end of 2.3 

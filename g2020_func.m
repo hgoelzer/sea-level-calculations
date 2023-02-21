@@ -1,4 +1,4 @@
-% SLE calculation function
+% SL calculation function
 % Implementinig Goelzer et al., 2020,
 % https://tc.copernicus.org/articles/14/833/2020/
 % Heiko Goelzer (heig@norceresearch.no), Feb 2023
