@@ -1,9 +1,8 @@
 % SL calculation function
-% Implementinig Adhikari et al., 2020
-% https://tc.copernicus.org/articles/14/2819/2020/
+% Implementinig Vaf method 
 % Heiko Goelzer (heig@norceresearch.no), Feb 2023
 
-function [slc] = a2020 (BED,BASE,SURFACE,params)
+function [slc] = vaf (BED,BASE,SURFACE,params)
 % Expect pairwise definitions of geometry for t0 and t1
 % dim(vars) = [:,2]
 % BASE => Base of the ice.
@@ -25,9 +24,6 @@ Aoc = params.Aoc; % m^2
 % compute ice thickness 
 THICK = SURFACE - BASE; 
 
-% Change in ice thickness relative to t0
-DEL_H = THICK - THICK(:,1); 
-
 % Level set function.
 F = THICK + rho_ocean/rho_ice*BED; % Equation 1. 
 
@@ -42,13 +38,7 @@ HF = GROUND_MASK.*(THICK - H0); % Equation 8.
 
 % The HAF method. 
 % Change in HAF 
-DEL_HF = HF - HF(:,1); % Equation 9. 
-
-% A2020 method of computing sea-level contribution from ice sheets. 
-GG = GROUND_MASK(:,1).*GROUND_MASK;
-DEL_HM = DEL_H.*GG + DEL_HF.*(1-GG); % Equation 11. 
-DEL_HV = (1-rho_water/rho_ocean)*(DEL_H - DEL_HF).*(1-GG); % Equation 12. 
-DEL_HS = DEL_HM(:,2) + DEL_HV(:,2); % Equation 10. 
+DEL_HF = HF(:,2) - HF(:,1); % Equation 9. 
 
 % Calculate sea-level contribution
-slc = -(rho_ice/rho_water) * DEL_HS / Aoc; % text end of 2.3 
+slc = -(rho_ice/rho_water) * DEL_HF / Aoc; 
