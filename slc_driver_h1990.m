@@ -4,18 +4,22 @@
 clear
 
 % Choose test configuration
-config = 9;
+config = 11;
 % 1 = path dependence | 2 = perturbation | 3 = pump |
 % 4 = transition | 5 = no iso | 6,7,8 = deglaciation |
-% 9 = 2d case (n,t)
+% 9 = 2d case (n,t) | 10 = vaf test | 11 = ISMIP6
 
+%% Settings
 % Verbose mode
 verbflg = 0;
 % Plotting mode
-pltflg = 1; 
+pltflg = 0; 
 select = 1; % Select grid cell to plot 
-% Output mode. Sum over grid cells, e.g. for complex examples
-sumflg = 1;
+
+%% More settings, may be overwritten with config specific settings
+% Output mode. Sum over grid cells, e.g. for real world examples
+sumflg = 0;
+res = 1;
 % Scaling for 0=schematic vs 1=real world setups
 sclflg = 0;
 
@@ -23,13 +27,7 @@ sclflg = 0;
 params.rho_ice = 917; % kg/m^3 
 params.rho_ocean = 1028; % kg/m^3 
 params.rho_water = 1000; % kg/m^3 
-if sclflg
-    % Real world case
-    params.Aoc = 3.625e14; % m^2
-else
-    % Schematic case
-    params.Aoc = 1; 
-end
+AF2 = 1;
 
 if config==1
     % 1) define configuration with path dependence
@@ -68,9 +66,29 @@ elseif config==9
     % 9) define 2D configuration (grid index,time) 
     THICK = [3, 2.5, 1.8, 0.7,  0.5, 0.2; 3, 2.5, 1.8, 0.7,  0.5, 0.2];
     BED = [-2, -2, -1.5, -1, -0.7, -0.5; -2, -2, -1.5, -1, 0.5, 1  ];
+elseif config==10
+    % 10) define configuration for vaf test
+    THICK = [3, 3, 0.7,  0.5, 0.2];
+    BED = [-2, -1.5, -1, 0.5, 1 ];
+elseif config==11
+    % 11) define configuration from ISMIP6 run
+    prep_ISMIP6
+    sumflg = 1;
+    sclflg = 1;
+    res = 16000;
 else
     disp('unknown config')
     return
+end
+
+if sclflg
+    % Real world case
+    params.Aoc = 3.625e14; % m^2
+    params.res = res;
+else
+    % Schematic case
+    params.Aoc = 1;
+    params.res = 1;
 end
 
 % Constructiong consistent configuration 
@@ -110,9 +128,9 @@ end
 if sumflg
     % sum over all grid cells
     % compare step and leap
-    h1990_step_leap = [sum(slc_step_h1990,1), sum(slc_leap_h1990,1)]
+    h1990_step_leap = [params.res^2*sum(slc_step_h1990.*AF2,1), params.res^2*sum(slc_leap_h1990.*AF2,1)]
     % compare all transitions
-    sum(slc_h1990,1)
+    sum(slc_h1990.*AF2,1)*params.res^2
 else
     % compare step and leap
     h1990_step_leap = [slc_step_h1990, slc_leap_h1990]

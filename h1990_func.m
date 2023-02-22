@@ -49,4 +49,4 @@ end
 
 % Calculate sea-level contribution
 %sle = (VOLTOT+VOLCORR)*(-2.512e-15)
-slc = -(VOLTOT+VOLCORR-VOL2)*rho_ice/rho_water*Aoc;
+slc = -(VOLTOT+VOLCORR-VOL2)*rho_ice/rho_water/Aoc;
