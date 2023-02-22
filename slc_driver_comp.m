@@ -1,10 +1,10 @@
-% SL calculation driver to compare G2020 and A2020
+% SL calculation driver to compare Vaf, H1990, A2020 and G2020
 % Heiko Goelzer (heig@norceresearch.no), Feb 2023
 
 clear
 
 % Choose test configuration
-config = 7;
+config = 10;
 % 1 = path dependence | 2 = perturbation | 3 = pump |
 % 4 = transition | 5 = no iso | 6,7,8 = deglaciation |
 % 9 = 2d case (n,t) | 10 = vaf test
@@ -93,25 +93,25 @@ nt = size(BED,2)-1;
 nc = size(BED,1);
 slc_vaf = zeros(nc,nt);
 slc_h1990 = zeros(nc,nt);
-slc_g2020 = zeros(nc,nt);
 slc_a2020 = zeros(nc,nt);
+slc_g2020 = zeros(nc,nt);
 % step through problem
 for n = 1:nt
     slc_vaf(:,n) = vaf_func(BED(:,n:(n+1)),BASE(:,n:(n+1)),SURFACE(:,n:(n+1)),params);
     slc_h1990(:,n) = h1990_func(BED(:,n:(n+1)),BASE(:,n:(n+1)),SURFACE(:,n:(n+1)),params);
-    slc_g2020(:,n) = g2020_func(BED(:,n:(n+1)),BASE(:,n:(n+1)),SURFACE(:,n:(n+1)),params);
     slc_a2020(:,n) = a2020_func(BED(:,n:(n+1)),BASE(:,n:(n+1)),SURFACE(:,n:(n+1)),params);
+    slc_g2020(:,n) = g2020_func(BED(:,n:(n+1)),BASE(:,n:(n+1)),SURFACE(:,n:(n+1)),params);
 end
 slc_step_vaf = sum(slc_vaf,2);
 slc_step_h1990 = sum(slc_h1990,2);
-slc_step_g2020 = sum(slc_g2020,2);
 slc_step_a2020 = sum(slc_a2020,2);
+slc_step_g2020 = sum(slc_g2020,2);
 
 % leap through problem from t0 to tend
 slc_leap_vaf = vaf_func(BED(:,[1,end]),BASE(:,[1,end]),SURFACE(:,[1,end]),params);
 slc_leap_h1990 = h1990_func(BED(:,[1,end]),BASE(:,[1,end]),SURFACE(:,[1,end]),params);
-slc_leap_g2020 = g2020_func(BED(:,[1,end]),BASE(:,[1,end]),SURFACE(:,[1,end]),params);
 slc_leap_a2020 = a2020_func(BED(:,[1,end]),BASE(:,[1,end]),SURFACE(:,[1,end]),params);
+slc_leap_g2020 = g2020_func(BED(:,[1,end]),BASE(:,[1,end]),SURFACE(:,[1,end]),params);
 
 % output configuration
 if verbflg
@@ -128,24 +128,24 @@ if sumflg
     % compare step and leap
     vaf_step_leap = [sum(slc_step_vaf,1), sum(slc_leap_vaf,1)]
     h1990_step_leap = [sum(slc_step_h1990,1), sum(slc_leap_h1990,1)]
-    g2020_step_leap = [sum(slc_step_g2020,1), sum(slc_leap_g2020,1)]
     a2020_step_leap = [sum(slc_step_a2020,1), sum(slc_leap_a2020,1)]
+    g2020_step_leap = [sum(slc_step_g2020,1), sum(slc_leap_g2020,1)]
     % compare all transitions
     sum(slc_vaf,1)
     sum(slc_h1990,1)
-    sum(slc_g2020,1)
     sum(slc_a2020,1)
+    sum(slc_g2020,1)
 else
     % compare step and leap
     vaf_step_leap = [slc_step_vaf, slc_leap_vaf]
     h1990_step_leap = [slc_step_h1990, slc_leap_h1990]
-    g2020_step_leap = [slc_step_g2020, slc_leap_g2020]
     a2020_step_leap = [slc_step_a2020, slc_leap_a2020]
+    g2020_step_leap = [slc_step_g2020, slc_leap_g2020]
     % compare all transitions
     slc_vaf
     slc_h1990
-    slc_g2020
     slc_a2020
+    slc_g2020
 end
 
 % plot configuration
