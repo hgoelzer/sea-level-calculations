@@ -2,6 +2,7 @@
 ## Compare sea-level calculation methods
 
 Heiko Goelzer (heig@norceresearch.no), Feb 2023
+Violaine Coulon (violaine.coulon@ulb.be) March 2023 
 
 ## Sea-level calculation based on 
 Vaf: Volume above floatation <br> 
@@ -37,4 +38,9 @@ slc_driver_comp.m <br>
 &nbsp;&nbsp;&nbsp;&nbsp;  a2020_func.m <br>
 &nbsp;&nbsp;&nbsp;&nbsp;  g2020_func.m <br>
 &nbsp;&nbsp;&nbsp;&nbsp;  plot_columns.m <br>
+
+## Compare A2020 and G2020 for ISMIP6-AIS-2300 extensions
+compare_A2020_G2020.m  <br>
+compare_A2020_G2020_split.m <br>
+
 
